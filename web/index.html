@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inteligencia de Enjambre | ACO</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div>
+        <h1>🐜 Inteligencia de Enjambre</h1>
+        <p>Optimización de rutas mediante Colonia de Hormigas (ACO)</p>
+    </div>
+
+    <div class="status">
+        <span id="statusDot"></span>
+        <span id="statusText">Listo</span>
+    </div>
+
+</header>
+
+
+<main class="layout">
+
+    <!-- PANEL IZQUIERDO -->
+
+    <aside class="sidebar">
+
+        <section class="card">
+
+            <h2>⚙ Parámetros</h2>
+
+            <label>
+                Número de hormigas
+                <input
+                    type="range"
+                    id="antsRange"
+                    min="5"
+                    max="60"
+                    value="30"
+                >
+                <span id="antsValue">30</span>
+            </label>
+
+
+            <label>
+                Iteraciones
+                <input
+                    type="range"
+                    id="iterationsRange"
+                    min="10"
+                    max="200"
+                    value="100"
+                >
+                <span id="iterationsValue">100</span>
+            </label>
+
+
+            <label>
+                Influencia de feromona
+                <input
+                    type="range"
+                    id="alphaRange"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    value="1"
+                >
+                <span id="alphaValue">1.0</span>
+            </label>
+
+
+            <label>
+                Influencia de distancia
+                <input
+                    type="range"
+                    id="betaRange"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    value="2"
+                >
+                <span id="betaValue">2.0</span>
+            </label>
+
+
+            <label>
+                Evaporación
+                <input
+                    type="range"
+                    id="evaporationRange"
+                    min="0.1"
+                    max="0.9"
+                    step="0.05"
+                    value="0.5"
+                >
+                <span id="evaporationValue">0.50</span>
+            </label>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>🎮 Controles</h2>
+
+            <button id="startBtn" class="primary">
+                ▶ Iniciar simulación
+            </button>
+
+            <button id="pauseBtn">
+                ⏸ Pausar
+            </button>
+
+            <button id="resetBtn">
+                ↻ Reiniciar
+            </button>
+
+            <button id="obstacleBtn" class="warning">
+                ⚠ Activar obstáculo
+            </button>
+
+        </section>
+
+
+        <section class="card">
+
+            <h2>🧠 Modelo</h2>
+
+            <p>
+                El sistema representa una colonia de hormigas
+                que utiliza feromonas y distancia para encontrar
+                rutas eficientes entre un origen y un destino.
+            </p>
+
+            <div class="legend">
+
+                <div>
+                    <span class="legend-dot origin"></span>
+                    Origen
+                </div>
+
+                <div>
+                    <span class="legend-dot destination"></span>
+                    Destino
+                </div>
+
+                <div>
+                    <span class="legend-dot ant"></span>
+                    Hormiga
+                </div>
+
+                <div>
+                    <span class="legend-line"></span>
+                    Feromona
+                </div>
+
+            </div>
+
+        </section>
+
+    </aside>
+
+
+    <!-- ÁREA PRINCIPAL -->
+
+    <section class="simulation-area">
+
+        <div class="simulation-header">
+
+            <div>
+                <h2>Simulación del enjambre</h2>
+                <p>
+                    Las hormigas exploran el entorno y refuerzan
+                    las rutas mediante feromonas.
+                </p>
+            </div>
+
+            <div id="environmentBadge" class="badge normal">
+                ENTORNO NORMAL
+            </div>
+
+        </div>
+
+
+        <div class="canvas-container">
+
+            <canvas id="simulationCanvas"></canvas>
+
+        </div>
+
+
+        <!-- MÉTRICAS -->
+
+        <div class="metrics">
+
+            <div class="metric-card">
+
+                <span>Iteración</span>
+
+                <strong id="iterationMetric">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <span>Hormigas</span>
+
+                <strong id="antsMetric">
+                    30
+                </strong>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <span>Mejor distancia</span>
+
+                <strong id="distanceMetric">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="metric-card">
+
+                <span>Promedio</span>
+
+                <strong id="averageMetric">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESULTADO -->
+
+        <section class="result-card">
+
+            <div>
+
+                <span class="result-label">
+                    MEJOR RUTA ENCONTRADA
+                </span>
+
+                <strong id="routeMetric">
+                    A → C → E
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span class="result-label">
+                    ESTADO DEL AGENTE
+                </span>
+
+                <strong id="adaptationMetric">
+                    Esperando simulación
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFORMACIÓN -->
+
+        <section class="info-grid">
+
+            <article>
+
+                <span>🔬 Sistema biológico</span>
+
+                <strong>
+                    Colonia de hormigas
+                </strong>
+
+            </article>
+
+
+            <article>
+
+                <span>🤖 Modelo computacional</span>
+
+                <strong>
+                    Ant Colony Optimization
+                </strong>
+
+            </article>
+
+
+            <article>
+
+                <span>🎯 Problema</span>
+
+                <strong>
+                    Optimización de rutas
+                </strong>
+
+            </article>
+
+
+            <article>
+
+                <span>🔄 Adaptación</span>
+
+                <strong>
+                    Replanificación dinámica
+                </strong>
+
+            </article>
+
+        </section>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        Proyecto académico · Inteligencia Artificial e Inspiración Biológica
+    </p>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
